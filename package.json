@@ -8,10 +8,10 @@
   }
 , "repository": {
     "type"         : "git",
-    "url"          : "https://github.com/mrose17/ieee-oui-lookup.git"
+    "url"          : "https://github.com/mrose17/node-ieee-oui-lookup.git"
   } 
 , "bugs"           : {
-    "url"          : "https://github.com/mrose17/ieee-oui-lookup/issues"
+    "url"          : "https://github.com/mrose17/node-ieee-oui-lookup/issues"
   }
 , "keywords"       : [ "MAC address", "IEEE OUI database", "Organizationally unique identifier" ]
 , "main"           : "./index.js"
