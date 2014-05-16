@@ -16,10 +16,10 @@ exports.start = function(cb) {
     if (!exists) return create(cb);
 
     fs.stat(txt, function(err, st1) {
-      if ((err) || (st1.mtime.getTime() < (new Date().getTime() - (7 * 86400 * 1000)))) return fetch(null, cb);
+      if ((!!err) || (st1.mtime.getTime() <= (new Date().getTime() - (1 * 86400 * 1000)))) return fetch(null, cb);
 
       fs.stat(sql, function(err, st2) {
-        if ((err) || (st1.mtime.getTime() > st2.mtime.getTime())) return parse(null, cb);
+        if ((!!err) || (st1.mtime.getTime() >= st2.mtime.getTime())) return parse(null, cb);
 
         exports.db = new sqlite3.Database(sql);
         cb(null, null);
@@ -44,10 +44,10 @@ var create = function(cb) {
   var db = new sqlite3.Database(sql);
 
   db.run('CREATE TABLE IF NOT EXISTS oui(id INTEGER PRIMARY KEY ASC, h6 TEXT, name TEXT)', function(err) {
-    if (err) return cb(err, null);
+    if (!!err) return cb(err, null);
 
     fs.stat(txt, function(err, st1) {
-      if ((err) || (st1.mtime.getTime() < (new Date().getTime() - (7 * 86400 * 1000)))) return fetch(null, cb);
+      if ((!!err) || (st1.mtime.getTime() < (new Date().getTime() - (7 * 86400 * 1000)))) return fetch(null, cb);
 
       parse(db, cb);
     });
@@ -106,7 +106,7 @@ var parse = function(db, cb) {
       id = parseInt(h6.trimLeft('0'), 16);
 
       db.run('INSERT INTO oui(id, h6, name) VALUES($id, $h6, $name)', { $id: id, $h6: h6, $name: name }, function(err) {
-        if (err) { info.errors++; cb(err, null); } else info.count++;
+        if (!!err) { info.errors++; cb(err, null); } else info.count++;
       });
     }
 
@@ -119,5 +119,7 @@ var parse = function(db, cb) {
 };
 
 exports.start(function(err, info) {
-  if (err) console.log('ieee-oui-lookup: ' + err.message); else console.log('ieee-oui-lookup: ' + JSON.stringify(info));
+  if (!!err) return console.log('ieee-oui-lookup: ' + err.message);
+
+  if (!!info) console.log('ieee-oui-lookup: ' + JSON.stringify(info));
 });

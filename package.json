@@ -1,6 +1,6 @@
 {
   "name"           : "ieee-oui-lookup"
-, "version"        : "0.0.2"
+, "version"        : "0.1.0"
 , "description"    : "fetch, parse, query IEEE OUI database."
 , "author": {
     "name"           : "Marshall Rose"
